@@ -1,0 +1,3 @@
+# Nginx https forward
+
+Nginxでhttpsリクエストを受けて設定に応じてNginxで静的コンテンツ処理したり別コンテナのhttpにリクエストさせたりする
