@@ -86,6 +86,7 @@ class ItemDaoProxy
 
     public function get($itemId)
     {
+        // Proxyで共通のキャッシュ処理を挟むことができる
         if (!array_key_exists($itemId, $this->cache)) {
             $this->cache[$itemId] = $this->dao->get($itemId);
         } else {
@@ -99,7 +100,7 @@ class ItemDaoProxy
 /**
  * 処理開始
  */
-if (($argv[1] ?: '') == 'mock') {
+if (($argv[1] ?? '') == 'mock') {
     $dao = new MockItemDao();
 } else {
     $dao = new ConstItemDao();
