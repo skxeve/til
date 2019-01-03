@@ -1,0 +1,16 @@
+{
+    "name": "skxeve/decorator",
+    "description": "decorator pattern example",
+    "type": "project",
+    "authors": [
+        {
+            "name": "skxeve",
+            "email": "skxeve@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "app/"
+        }
+    }
+}
