@@ -5,7 +5,7 @@ use App\Interfaces\PlanInterface;
 
 abstract class PlanDecorator implements PlanInterface
 {
-    private $obj;
+    protected $obj;
 
     public function __construct(PlanInterface $obj)
     {
