@@ -7,6 +7,7 @@
 3. Factory Method
 4. Prototype
 5. Singleton
+1インスタンスを保証する。
 
 ## 構造に関するパターン
 
