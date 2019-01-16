@@ -18,6 +18,8 @@
 - Python3.7
 - Go1.11
 
+[参考:appengine-generation](https://cloud.google.com/appengine/docs/standard/appengine-generation)
+
 ### Memo
 
 ```
