@@ -41,6 +41,9 @@ Proxyパターンと似ている部分がある。
 19. Observer
 20. State
 21. Strategy
+戦略を容易に切り替えられるような実装方法。
+メソッドの中にif文などで埋め込むのに比べ、アルゴリズムを柔軟に変更できるようにした設計。
+
 22. Template Method
 23. Visitor
 

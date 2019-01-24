@@ -1,0 +1,14 @@
+{
+    "name": "skxeve/strategy",
+    "authors": [
+        {
+            "name": "skxeve",
+            "email": "skxeve@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "App\\": "src/"
+        }
+    }
+}
