@@ -45,6 +45,6 @@ OAuth2.0は「特定のユーザであることを本人確認」する（認証
 
 ## 参考
 
-[OAuth2の解説サイトを漁る前に](https://qiita.com/kojisaiki/items/48adf59d5d634fd330af)
-[一番分かりやすい OAuth の説明](https://qiita.com/TakahikoKawasaki/items/e37caf50776e00e733be)
-[OAuth2.0の代表的な利用パターン](https://www.buildinsider.net/enterprise/openid/oauth20)
+- [OAuth2の解説サイトを漁る前に](https://qiita.com/kojisaiki/items/48adf59d5d634fd330af)
+- [一番分かりやすい OAuth の説明](https://qiita.com/TakahikoKawasaki/items/e37caf50776e00e733be)
+- [OAuth2.0の代表的な利用パターン](https://www.buildinsider.net/enterprise/openid/oauth20)
