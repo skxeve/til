@@ -103,7 +103,7 @@ MySQLとPostgreSQLが選択可能。
 
 ## ネットワーキングサービス
 
-GCPのネットワーキングサービスには、以下の５種類がある。
+５種類ある。
 
 ### Virtual Private Cloud(VPC)
 
