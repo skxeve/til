@@ -100,3 +100,27 @@ MySQLとPostgreSQLが選択可能。
 ### Spanner
 
 従来のRDBとNoSQLの**いいとこどり**を実現したRDBサービスである。
+
+## ネットワーキングサービス
+
+GCPのネットワーキングサービスには、以下の５種類がある。
+
+### Virtual Private Cloud(VPC)
+
+GCPリソースのために論理的に分離された仮想ネットワーク
+
+### Cloud Load Balancing
+
+グローバルな負荷分散を行うレイヤー4の負荷分散サービス
+
+### Cloud CDN
+
+キャッシュサービス
+
+### Cloud DNS
+
+低レイテンシーで高品質なDNSサービス
+
+### Cloud Interconnect
+
+自社オンプレ環境からセキュアにネットワーク接続するサービス
