@@ -247,8 +247,22 @@ BigQuery以外のサービスでは「データアクセス」ログはデフォ
 
 | サービス | 概要 | 大分類 | 概要 |
 |---------|-----|-------|----|
-| Stackdriver Monitoring | メトリクス監視、イベント情報の収集、ダッシュボード、アラート通知 | 運用監視 |  |
-| Stackdriver Logging | API操作、ミドルウェア、アプリケーションログ表示、フィルタリング | 運用監視 |  |
+| Stackdriver Monitoring | メトリクス監視、イベント情報の収集、ダッシュボード、アラート通知 | 運用監視 | 監視情報のダッシュボード上での可視化、アラート |
+| Stackdriver Logging | API操作、ミドルウェア、アプリケーションログ表示、フィルタリング | 運用監視 | ログの閲覧、フィルタ、アラート |
 | Stackdriver Error Reporting | アプリケーションエラー分析、集計、通知サービス、アラート通知 | 開発サイクル効率化 | エラーの集計・表示 |
 | Stackdriver Trace | レイテンシーのサンプリング、URLごとの統計情報とレイテンシー分析のレポート | 開発サイクル効率化 | ボトルネック判断用 |
 | Stackdriver Debugger | 稼働中の本番環境コードに対して直接デバッグ | 開発サイクル効率化 | 稼働中サービスで特定行のスタックや変数をキャプチャ |
+
+## 機械学習サービス
+
+1. まず利用したいAPIを有効化する
+1. クライアントライブラリをダウンロード・利用する
+
+で手軽に使用できる。
+
+- Cloud ML(Machine Learning) Engine
+- Cloud Speech API
+- Cloud Vision API
+- Cloud Translate API
+- Cloud Natural Language API
+- Cloud Video Intelligence API
