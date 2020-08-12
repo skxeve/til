@@ -107,11 +107,87 @@ Block Element Modifierの略
 
 フロントエンド開発手法で使われている命名規則
 
+- 親子の従属関係にあるため、Block__Element
+- 属性を示す対等関係にあるため、Block--Modifier
+
+命名のデリミタには固定のルールはなく各々で工夫していることも多いが、一つのデザインの中で統一されていることが大事。
+
 ### MCSS
+
+マルチレイヤーCSS
+
+複数のレイヤー構成を元にしてCSSを設計するアプローチのこと。
+
+- Foundation
+  - SMACSSのBaseカテゴリと同等
+- Base
+  - SMACSSのModuleカテゴリと近い
+- Project
+  - Baseレイヤーより具体的なページを構成する要素を含む
+- Cosmetic
+  - ちょっとしたスタイル、ユーティリティなど
+
 
 ### FLOCSS
 
+筆者が現在進行系で作成しているガイドライン
+
 ## コンポーネント設計の実践
+
+コンポーネント設計は時と場合により、万能の解決策は存在しない。
+
+### ボタンやリンク要素
+
+- `cursor: pointer`でマウスオーバー時の振る舞い設定
+- 固定の幅を持たせない
+
+### アイコン
+
+- CSSスプライト
+  - 背景画像の座標をbackground-positionで制御し、widthとheightで表示領域を指定して表示する
+- アイコンフォント
+  - フォントを使えるようにするための@font-faceルール指定などはやや複雑だが、コンポーネント自体はシンプルになる
+
+### メディア
+
+画像や写真が左側に、本文などがその反対側に並ぶようなレイアウト
+
+シンプルな実装例
+
+```
+.media:before,
+.media:after {
+  display: table; /* 子要素でfloatを使うためClearfixする */
+  content: " "; /* 子要素でfloatを使うためClearfixする */
+}
+
+.media:after {
+  clear: both; /* 子要素でfloatを使うためClearfixする */
+}
+
+.media__image {
+  float: left;
+  margin-right: 10px;
+}
+
+.media__image > img {
+  display: block;
+}
+
+.media__body {
+  overflow: hidden; /* 画像下にテキストが回り込むのを防ぐ */
+}
+
+```
+
+### ナビゲーション
+
+- `display:table`と`display:table-cell`を使うと、要素が増えすぎても改行されない
+- `float:left`なら改行される
+- 要素を並べるなら、モダンなブラウザに絞るれるならFlexboxもいい
+  - `display:flex`
+  - `flex-wrap: wrap;` が適用されていない限りはdisplay:tableのように水平に子要素が並ぶ。
+    - 均一の幅で並べたい場合は`width: 100%;`
 
 ## CSSプリプロセッサを用いた設計と管理
 
