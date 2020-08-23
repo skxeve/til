@@ -1,0 +1,8 @@
+Dockerfile
+README.md
+*.pyc
+*.pyo
+*.pyd
+__pycache__
+make-container-registry.sh
+deploy-cloud-run.sh
