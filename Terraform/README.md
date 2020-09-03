@@ -19,10 +19,23 @@ GCPやAWSをまたいで管理することが可能。
 よくわからない…名前と雰囲気では複数のTerraform設定から呼び出せるようにした共通設定のような印象を受ける。
 
 > 関連するリソースを管理する、Terraform設定の自己完結型コレクション。
-> 
+>
 > 他のTerraform設定からモジュールを呼び出すことが可能。
 > 呼び出し元は入力変数を設定することができ、出力値を受け取る。
 
+モジュールは一つのディレクトリに存在する`.tf`ファイル群を指す。
+Terraform実行ディレクトリのモジュールをルートモジュールと呼称する。
+
+モジュールは`module`ブロックで呼び出すことが可能。
+
+### Workspace
+
+ワークスペースという概念があり、異なる環境に対して似たような構成をデプロイするのに有用。Stateファイルなどを個別に管理できる。
+何もしなければdefaultというワークスペース内にいることになるため、明示的に指定しなくてもWorkspaceという概念の下でTerraformは動いていることになる。
+
+想定としてはテスト環境に本番環境と同じ構成を試しに作る時に使うもので、構成を環境によって変えたりするのには向かないらしい。
+変数で並列数を変更する、といった程度の対応なら三項演算子などを使えば容易。
+設定ファイルの中で`${terraform.workspace}`としてworkspace名を参照できる。
 
 ## 実施
 
@@ -157,6 +170,12 @@ variable "region" {
 - `TF_VAR_name`環境変数が定義されていれば、これを自動的に発見し`name`変数を設定する。
 - `terraform apply`実行時に求められる変数をインタラクティブに入力する
 
+#### Local Variables
+
+`locals`で引数に取れない、モジュール内でのみ有効な変数を定義することができる。
+`local.name`で参照可能。
+
+
 ### Output Variables
 
 `terraform apply`の結果、生成した全てではなく、いくつかの重要な値にのみ関心があるケースがある。
@@ -165,3 +184,117 @@ variable "region" {
 `terraform refresh`でクラウド上のリソースを参照しながらoutputを生成することができる。
 
 
+## GCP Provider
+
+### PubSub
+
+#### Topic
+
+```
+resource "google_pubsub_topic" "resource_name" {
+  name = "topic_name"
+}
+```
+
+#### Topic IAM
+
+サービスアカウントのTopicへのパブリッシュ権限とか。
+
+3種類あり、異なるユースケースに対応している。
+よく使いそうなのは`google_pubsub_topic_iam_binding`と思われる。
+
+
+`google_pubsub_topic_iam_policy`は他2種とは一緒に使えない。
+
+> 権威的。IAMポリシーをTopicにセットし既存のあらゆるポリシーと置き換える。
+
+包括的な定義を行い、記述されない権限を認めない完全な制御をしたい時はこれ。
+
+```
+data "google_iam_policy" "admin" {
+  binding {
+    role = "roles/viewer"
+    members = [
+      "user:jane@example.com",
+    ]
+  }
+}
+resource "google_pubsub_topic_iam_policy" "policy" {
+  project = google_pubsub_topic.example.project
+  topic = google_pubsub_topic.example.name
+  policy_data = data.google_iam_policy.admin.policy_data
+}
+```
+
+`google_pubsub_topic_iam_binding`と`google_pubsub_topic_iam_member`は、同じ役割に特権を与えない場合に限り、一緒に使える。
+
+> 与えられたロールに権威的。リストのメンバーに対してロールを付与するため、IAMポリシーを更新する。Topicに紐づくIAMポリシーのその他のロールはそのままにする。
+
+特定のロールについて管理し、他の理由で付与された権限は無視する場合はこれ。
+
+```
+resource "google_pubsub_topic_iam_binding" "resource_name" {
+  project = google_pubsub_topic.example.project
+  topic = google_pubsub_topic.example.name
+  role = "roles/viewer"
+  members = [
+    "user:jane@example.com"
+  ]
+}
+```
+
+> 権威的でない。新規メンバーにロールを付与するためにIAMポリシーを更新する。他のロール、他のメンバーについてはそのままにする。
+
+新規メンバーの管理…？
+
+```
+resource "google_pubsub_topic_iam_member" "resource_name" {
+  project = google_pubsub_topic.example.project
+  topic = google_pubsub_topic.example.name
+  role = "roles/viewer"
+  members = "user:jane@example.com"
+}
+```
+
+#### Subscription
+
+Push
+
+```
+resource "google_pubsub_subscription" "push_example" {
+  name = "example-subscription"
+  topic = google_pubsub_topic.example.name
+  ack_deadline_seconds = 20
+  push_config {
+    push_endpoint = "https://example.com/push"
+    attributes = {
+      x-goog-version = "v1"
+    }
+  }
+}
+```
+
+Pull
+```
+resource "google_pubsub_subscription" "push_example" {
+  name = "example-subscription"
+  topic = google_pubsub_topic.example.name
+  message_retention_duration = "1200s"
+  retain_acked_messages = true
+  ack_deadline_seconds = 20
+  expiration_policy {
+    ttl = "3000000.5s"
+  }
+  retry_policy {
+    minimum_backoff = "10s"
+  }
+  enable_message_ordering = false
+```
+
+#### Subscription IAM
+
+Topic IAMと同様に3種類ある。割愛。
+
+- `google_pubsub_subscription_iam_policy`
+- `google_pubsub_subscription_iam_binding`
+- `google_pubsub_subscription_iam_member`
